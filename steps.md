@@ -14,3 +14,9 @@ Check to make sure server has nodemon index.js script in package.json
 
 #5.
 npm run server
+
+<!-- Set up server.js and index.js -->
+
+
+
+
