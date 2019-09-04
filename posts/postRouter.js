@@ -33,6 +33,23 @@ router.put("/:id", (req, res) => {});
 
 // custom middleware
 
-function validatePostId(req, res, next) {}
+function validatePostId(request, response, next) {
+  const { id } = request.params;
+  // dbPosts is the Post db being imported. getById is one of the functions with that db
+  dbPosts
+    .getById(id)
+    .then(count => {
+      console.log("count success", count);
+      if (count) {
+        next();
+      } else {
+        response.status(400).json({ message: "post id not found" });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      response.status(500).json({ message: "failed validation request" });
+    });
+}
 
 module.exports = router;
