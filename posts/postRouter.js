@@ -63,7 +63,7 @@ router.put("/:id", validatePostId, (request, response) => {
     .update(id, body)
     .then(post => {
       //   console.log(post)
-      res.status(200).json({ message: `post updated for id ${id}` });
+      response.status(200).json({ message: `post updated for id ${id}` });
     })
     .catch(error =>
       response.status(500).json({ message: "failed to update post" })

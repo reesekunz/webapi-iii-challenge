@@ -9,11 +9,31 @@ router.use(express.json());
 
 // POST to /users/
 // name required
-router.post("/", (request, response) => {});
+router.post("/", validateUser, (request, response) => {
+  const body = request.body;
+  dbUsers
+    .insert(body)
+    .then(post => {
+      response.status(200).json(post);
+    })
+    .catch(error =>
+      response.status(500).json({ message: "failed to add user" })
+    );
+});
 
-// POST to /users/
+// POST to /users/:id/posts
 // name and user_id required
-router.post("/:id/posts", (req, res) => {});
+router.post("/:id/posts", validateUserId, validatePost, (request, response) => {
+  const body = request.body;
+  dbPosts
+    .insert(body)
+    .then(post => {
+      response.status(200).json(post);
+    })
+    .catch(error =>
+      response.status(500).json({ message: "failed to add post by user id" })
+    );
+});
 
 // GET to /users/
 router.get("/", (request, response) => {
@@ -43,9 +63,17 @@ router.get("/:id", validateUserId, (request, response) => {
 });
 
 // GET to /users/:id/posts
-router.get("/:id/posts", (request, response) => {
+router.get("/:id/posts", validateUserId, (request, response) => {
   const { id } = request.params;
   //   response.send(`get to /users/${id}/posts`);
+  dbUsers
+    .getUserPosts(id)
+    .then(user => {
+      response.status(200).json(user);
+    })
+    .catch(error =>
+      response.status(500).json({ message: "failed to get user by id " })
+    );
 });
 
 // DELETE to /users/:id
@@ -64,8 +92,18 @@ router.delete("/:id", validateUserId, (request, response) => {
 });
 
 // PUT to users/:id
-//
-router.put("/:id", (request, response) => {});
+router.put("/:id", (request, response) => {
+  const { id } = request.params;
+  const body = request.body;
+  dbUsers
+    .update(id, body)
+    .then(user =>
+      response.status(200).json({ message: `user updated for id ${id}` })
+    )
+    .catch(error =>
+      response.status(500).json({ message: "failed to update user" })
+    );
+});
 
 //custom middleware
 
