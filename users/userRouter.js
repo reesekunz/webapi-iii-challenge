@@ -2,12 +2,17 @@ const express = require("express");
 
 const router = express.Router();
 
-const db = require("./userDb");
+const dbUsers = require("./userDb");
+const dbPosts = require("../posts/postDb");
 
 router.use(express.json());
 
-router.post("/", (req, res) => {});
+// POST to /users/
+// name required
+router.post("/", (request, response) => {});
 
+// POST to /users/
+// name and user_id required
 router.post("/:id/posts", (req, res) => {});
 
 // GET to /users/
@@ -29,7 +34,8 @@ router.get("/:id/posts", (request, response) => {
 // DELETE to /users/:id
 router.delete("/:id", (request, response) => {
   const { id } = request.params;
-  db.remove(id)
+  dbUsers
+    .remove(id)
     .then(count =>
       response.status(200).json({ message: `${count} comment deleted` })
     )
@@ -38,14 +44,33 @@ router.delete("/:id", (request, response) => {
     );
 });
 
-router.put("/:id", (req, res) => {});
+// PUT to users/:id
+//
+router.put("/:id", (request, response) => {});
 
 //custom middleware
 
-function validateUserId(req, res, next) {}
+function validateUserId(request, response, next) {
+  const { id } = request.params;
+  // dbUsers is the User db being imported. getById is one of the functions with that db
+  dbUsers
+    .getById(id)
+    .then(count => {
+      console.log("count success", count);
+      if (count) {
+        next();
+      } else {
+        response.status(400).json({ message: "user id not found" });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      response.status(500).json({ message: "failed validation request" });
+    });
+}
 
-function validateUser(req, res, next) {}
+function validateUser(request, response, next) {}
 
-function validatePost(req, res, next) {}
+function validatePost(request, response, next) {}
 
 module.exports = router;

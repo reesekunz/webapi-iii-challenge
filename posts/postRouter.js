@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const db = require("./postDb");
+const dbPosts = require("./postDb");
 
 router.use(express.json());
 
@@ -19,7 +19,8 @@ router.get("/:id", (request, response) => {
 // DELETE to /posts/:id
 router.delete("/:id", (request, response) => {
   const { id } = request.params;
-  db.remove(id)
+  dbPosts
+    .remove(id)
     .then(count =>
       response.status(200).json({ message: `${count} comment deleted` })
     )
