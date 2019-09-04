@@ -8,6 +8,10 @@ const userRouter = require("./users/userRouter");
 // global middleware
 server.use(express.json());
 
+// use the productsRouter whenever you go to /products
+server.use(`/posts`, postRouter);
+server.use(`/users`, userRouter);
+
 server.get("/", (request, response) => {
   response.status(200).json({ api: "up" });
 });

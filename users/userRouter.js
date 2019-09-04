@@ -2,14 +2,24 @@ const express = require("express");
 
 const router = express.Router();
 
+router.use(express.json());
+
 router.post("/", (req, res) => {});
 
 router.post("/:id/posts", (req, res) => {});
 
-router.get("/", (req, res) => {});
+// GET to /users/
+router.get("/", (request, response) => {
+  response.send("get to /users/");
+});
 
-router.get("/:id", (req, res) => {});
+// GET to /users/:id
+router.get("/:id", (request, response) => {
+  const { id } = request.params;
+  response.send(`get to /users/${id}`);
+});
 
+// GET to /users/:id/posts
 router.get("/:id/posts", (req, res) => {});
 
 router.delete("/:id", (req, res) => {});
