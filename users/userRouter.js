@@ -17,13 +17,29 @@ router.post("/:id/posts", (req, res) => {});
 
 // GET to /users/
 router.get("/", (request, response) => {
-  response.send("get to /users/");
+  //   response.send("get to /users/");
+  dbUsers
+    .get()
+    .then(post => {
+      response.status(200).json(post);
+    })
+    .catch(error =>
+      response.status(500).json({ message: "failed to get users" })
+    );
 });
 
 // GET to /users/:id
-router.get("/:id", (request, response) => {
+router.get("/:id", validateUserId, (request, response) => {
   const { id } = request.params;
-  response.send(`get to /users/${id}`);
+  //   response.send(`get to /users/${id}`);
+  dbUsers
+    .getById(id)
+    .then(user => {
+      response.status(200).json(user);
+    })
+    .catch(error =>
+      response.status(500).json({ message: "failed to get user by id " })
+    );
 });
 
 // GET to /users/:id/posts
