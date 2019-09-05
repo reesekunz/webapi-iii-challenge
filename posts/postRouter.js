@@ -51,13 +51,12 @@ router.delete("/:id", validatePostId, (request, response) => {
 });
 
 // PUT to /posts/:id
-// text and user_id requrired
-
+// text and user_id required
 router.put("/:id", validatePostId, (request, response) => {
   console.log("/posts/:id");
   const { id } = request.params;
   const body = request.body;
-  console.log("put body", body);
+  console.log("put body", request.body);
 
   dbPosts
     .update(id, body)

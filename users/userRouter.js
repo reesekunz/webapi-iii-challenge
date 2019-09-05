@@ -8,7 +8,6 @@ const dbPosts = require("../posts/postDb");
 router.use(express.json());
 
 // POST to /users/
-// name required
 router.post("/", validateUser, (request, response) => {
   const body = request.body;
   dbUsers
